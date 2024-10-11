@@ -1,0 +1,123 @@
+-- Active: 1728375743447@@mysql-qte4288-cs310.coqnybpzsdbk.us-east-2.rds.amazonaws.com@3306
+SELECT NOW();
+
+
+CREATE DATABASE photoapp;
+
+
+USE photoapp;
+
+
+DROP TABLE IF EXISTS assets;
+DROP TABLE IF EXISTS users;
+
+
+CREATE TABLE users
+(
+    userid       int not null AUTO_INCREMENT,
+    email        varchar(128) not null,
+    lastname     varchar(64) not null,
+    firstname    varchar(64) not null,
+    bucketfolder varchar(48) not null,  -- random, unique name (UUID)
+    PRIMARY KEY (userid),
+    UNIQUE      (email),
+    UNIQUE      (bucketfolder)
+);
+
+
+ALTER TABLE users AUTO_INCREMENT = 80001;  -- starting value
+
+
+CREATE TABLE assets
+(
+    assetid      int not null AUTO_INCREMENT,
+    userid       int not null,
+    assetname    varchar(128) not null,  -- original name from user
+    bucketkey    varchar(128) not null,  -- random, unique name in bucket
+    PRIMARY KEY (assetid),
+    FOREIGN KEY (userid) REFERENCES users(userid),
+    UNIQUE      (bucketkey)
+);
+
+
+ALTER TABLE assets AUTO_INCREMENT = 1001;  -- starting value
+
+
+SELECT * FROM users;
+SELECT * FROM assets
+
+
+
+USE photoapp;
+
+INSERT INTO 
+  users(email, lastname, firstname, bucketfolder)
+  values('pooja.sarkar@company.com', 'sarkar', 'pooja', 
+         '0789ba12-4580-4470-bd55-3398f5a75447');
+INSERT INTO 
+  assets(userid, assetname, bucketkey)
+  values(80001,
+         'IMG_3932.jpg',
+         '0789ba12-4580-4470-bd55-3398f5a75447/6bf530c1-6cad-4044-8378-d8a44c6a668e.jpg');
+INSERT INTO 
+  assets(userid, assetname, bucketkey)
+  values(80001,
+         'IMG_3934.jpg',
+         '0789ba12-4580-4470-bd55-3398f5a75447/7ebb94ad-2a4f-4b77-80c1-f030b7b21c14.jpg');
+
+
+
+
+INSERT INTO 
+  users(email, lastname, firstname, bucketfolder)
+  values('truck.lop@company.com', 'truck', 'lop', 
+         '49b25726-0ee7-40dd-a26c-74953234cf8d');
+INSERT INTO 
+  assets(userid, assetname, bucketkey)
+  values(80002,
+         '1_EMPLweek.jpg',
+         '49b25726-0ee7-40dd-a26c-74953234cf8d/ef9b8e99-24bd-4e85-abce-3f4c174a96ee.jpg');
+INSERT INTO 
+  assets(userid, assetname, bucketkey)
+  values(80002,
+         '2_EMPLweek.jpg',
+         '49b25726-0ee7-40dd-a26c-74953234cf8d/6a2a481e-4c41-4009-9ead-19bf897ff47e.jpg');
+
+
+
+INSERT INTO 
+  users(email, lastname, firstname, bucketfolder)
+  values('gram.crac@company.com', 'gram', 'crac', 
+         '3ce4e7f3-b27f-4816-8f27-d8831254fcdc');
+INSERT INTO 
+  assets(userid, assetname, bucketkey)
+  values(80003,
+         'IMG_0137.JPG',
+         '3ce4e7f3-b27f-4816-8f27-d8831254fcdc/3145ae3f-7ee2-4a78-b77c-4f0df0031706.JPG');
+INSERT INTO 
+  assets(userid, assetname, bucketkey)
+  values(80003,
+         'IMG_0139.JPG',
+         '3ce4e7f3-b27f-4816-8f27-d8831254fcdc/98b6a857-c994-410b-b734-b4071c97807a.jpg');
+
+
+
+
+
+USE photoapp;
+
+
+DROP USER IF EXISTS 'photoapp-read-only';
+DROP USER IF EXISTS 'photoapp-read-write';
+
+
+CREATE USER 'photoapp-read-only' IDENTIFIED BY 'abc123!!';
+CREATE USER 'photoapp-read-write' IDENTIFIED BY 'def456!!';
+
+
+GRANT SELECT, SHOW VIEW ON photoapp.* 
+      TO 'photoapp-read-only';
+GRANT SELECT, SHOW VIEW, INSERT, UPDATE, DELETE, DROP, CREATE, ALTER ON photoapp.* 
+      TO 'photoapp-read-write';
+      
+FLUSH PRIVILEGES;
