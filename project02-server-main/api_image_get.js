@@ -103,7 +103,7 @@ exports.get_image = async (req, res) => {
 
     if (results[0].length === 0) {
       console.log(`**Invalid assetid: ${assetid}`);
-      return res.status(404).json({
+      return res.status(400).json({
         "message": `No such asset...`,
         "user_id": -1,
         "asset_name": "?",
