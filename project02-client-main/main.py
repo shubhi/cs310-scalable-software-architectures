@@ -815,11 +815,6 @@ while cmd != 0:
     bucket_contents(baseurl)
   elif cmd == 7:
     add_user(baseurl)
-  #
-  #
-  # TODO: add calls to command functions for 4 - 7
-  #
-  #
   elif cmd == 8:
     upload(baseurl)
   else:
