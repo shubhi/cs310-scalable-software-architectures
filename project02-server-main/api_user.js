@@ -87,7 +87,7 @@ exports.put_user = async (req, res) => {
       const insertResult = await query_database(photoapp_db, insertUserSql);
 
       if (insertResult.affectedRows === 1) {
-        return res.status(201).json({
+        return res.status(200).json({
           "message": "inserted",
           "userid": insertResult.insertId
         });
