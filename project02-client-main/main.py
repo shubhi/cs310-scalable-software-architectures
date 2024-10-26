@@ -592,11 +592,19 @@ def add_user(baseurl):
     #
     # TODO
     #
+    # data = {
+    #   "?": email,
+    #   "??": last_name,
+    #   "???": first_name,
+    #   "???": folder
+    # }
+
+
     data = {
-      "?": email,
-      "??": last_name,
-      "???": first_name,
-      "???": folder
+        "email": email,
+        "lastname": last_name,
+        "firstname": first_name,
+        "bucketfolder": folder
     }
 
     #
@@ -608,13 +616,13 @@ def add_user(baseurl):
     #
     # TODO
     #
-    # res = requests.???(url, json=???)
+    res = requests.put(url, json=data)
     #
 
     #
     # let's look at what we got back:
     #
-    if res.status_code != 200:
+    if res.status_code != 200 and res.status_code != 201:
       # failed:
       print("Failed with status code:", res.status_code)
       print("url: " + url)
@@ -629,8 +637,11 @@ def add_user(baseurl):
     #
     body = res.json()
 
-    userid = body["userid"]
-    message = body["message"]
+    userid = body.get("userid", -1)
+    message = body.get("message", "Unknown result")
+
+    # userid = body["userid"]
+    # message = body["message"]
 
     print("User", userid, "successfully", message)
 
@@ -802,6 +813,8 @@ while cmd != 0:
     download(baseurl)
   elif cmd == 6:
     bucket_contents(baseurl)
+  elif cmd == 7:
+    add_user(baseurl)
   #
   #
   # TODO: add calls to command functions for 4 - 7
