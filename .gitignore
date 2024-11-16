@@ -180,3 +180,9 @@ project01/test-config.ini
 project01/photoapp-read-only.ini
 
 project02-server-main/photoapp-config.ini
+
+web-service/photoapp-config.ini
+
+web-service/web-service/photoapp-config.ini
+
+project02-client-main/ec2-client-config.ini

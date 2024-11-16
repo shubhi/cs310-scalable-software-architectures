@@ -394,12 +394,12 @@ def download(baseurl, display=False):
     #
     if res.status_code != 200:
       # failed:
-      print("Failed with status code:", res.status_code)
-      print("url: " + url)
+      # print("Failed with status code:", res.status_code)
+      # print("url: " + url)
 
       if res.status_code in range(400, 500):  # we'll have an error message
         body = res.json()
-        print("Error message:", body["message"])
+        print(body["message"])
       #
       return
 
@@ -497,7 +497,7 @@ def bucket_contents(baseurl):
       else:
           url = baseurl + api
 
-      print(f"Requesting: {url}")
+      # print(f"Requesting: {url}")
 
       # Make the GET request to the web service
       response = requests.get(url)
@@ -514,14 +514,18 @@ def bucket_contents(baseurl):
       if not data['data']:
           print("No more data available.")
           break
+      
+      count = 0
 
       # Display the current page of results
       for item in data['data']:
-          print(f"Key: {item.get('Key')}")
-          print(f"LastModified: {item.get('LastModified')}")
-          print(f"Size: {item.get('Size')}")
-          print(f"StorageClass: {item.get('StorageClass')}")
-          print("---")
+          print(f"{item.get('Key')}")
+          print(f"  {item.get('LastModified')}")
+          print(f"  {item.get('Size')}")
+          count+=1
+      
+      if count < 12:
+        break
 
       # Get the last key from the current page (for pagination)
       lastkey = data['data'][-1].get('Key')
@@ -751,7 +755,8 @@ sys.tracebacklimit = 0
 #
 # what config file should we use for this session?
 #
-config_file = 'photoapp-client-config.ini'
+# config_file = 'photoapp-client-config.ini'
+config_file = 'ec2-client-config.ini'
 
 print("What config file to use for this session?")
 print("Press ENTER to use default (photoapp-client-config.ini),")
